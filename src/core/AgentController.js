@@ -1,6 +1,6 @@
 import { expectPromiseToFail } from "@tensorflow/tfjs-core/dist/test_util";
 
-class Container {
+class AgentController {
     constructor() {
         this.agents = {};
         this.world0 = null;
@@ -81,3 +81,5 @@ class Container {
 
     }
 }
+
+module.exports = AgentContainer;
