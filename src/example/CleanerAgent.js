@@ -33,3 +33,5 @@ class CleanerAgent extends Agent {
     }
 
 }
+
+module.exports = CleanerAgent;
