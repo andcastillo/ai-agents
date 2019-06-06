@@ -18,9 +18,9 @@ function min(data) {
 
 let problem = [
     [0, 0, 0, 0 ],
-    [1, 0, -1, 1],
-    [0, 0, 0, 0],
-    [0, 0, 1, 0]];
+    [0, 1, 1, -1],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1]];
 
 let solution = function(data) {
     let minX = min(data.world);
@@ -74,8 +74,8 @@ let perceptionForAgent = function(data, agentID) {
 
     result = result.map(value => value > 0 ? 1 : 0);
     //SMELL
+
     result.push(Math.abs(map[y][x]));
-    console.log(result);
     return result;
 }
 
@@ -84,7 +84,7 @@ let agent1 = new CleanerAgent("Smith");
 
 let container = new AgentController();
 container.setup({world: problem, solution: solution, update, perceptionForAgent});
-container.register(agent1, {x: 3, y: 3});
+container.register(agent1, {x: 0, y: 2});
 container.start({onFinish: (result) => {
     let agentID = result.actions[result.actions.length - 1].agentID;
     console.log("Winner " + agentID);
@@ -93,4 +93,4 @@ container.start({onFinish: (result) => {
     let agentState = result.data.states[agentID];
     world[agentState.y][agentState.x] = "X"
     console.log(world);
-}, onTurn0: (result) => {console.log("Turn: " + result)}});
+}, onTurn: (result) => {console.log("Turn: " + result)}});

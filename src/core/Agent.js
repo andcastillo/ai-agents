@@ -11,24 +11,39 @@ class Agent {
         this.table = {"default": 0};
     };
 
-    setup(parameters = { actions: [] }) {
-        this.table = parameters.table;
+    /**
+     * Setup of the agent. Could be override by the class extension
+     * @param {*} parameters 
+     */
+    setup(initialState = { }) {
+        this.initialState = initialState;
     }
-
+    /**
+     * Function that receive and store the perception of the world that is sent by the agent controller. This data is stored internally
+     * in the this.perception variable
+     * @param {Object} inputs 
+     */
     receive(inputs) {
         this.perception = inputs;
     }
+
     /**
-     * Inform to the Agent Container about the action to perform
+     * Inform to the Agent controller about the action to perform
      */
     send() {
         return table["deafult"];
     }
 
+    /**
+     * Return the agent id
+     */
     getLocalName() {
         return this.id;
     }
 
+   /**
+     * Return the agent id
+     */
     getID() {
         return this.id;
     }
