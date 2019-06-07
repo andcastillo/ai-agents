@@ -5,18 +5,20 @@ class AgentController {
         this.world0 = null;
         this.world = null;
         this.actions = [];
+        this.data = {states: [], world : {}}
     }
     /**
      * Setup the configuration for the agent controller
      * @param {Object} parameter 
      */
     setup(parameter) {
+        this.problem = parameter.problem;
         this.world0 = JSON.parse(JSON.stringify(parameter.world));
-        this.data = {world: JSON.parse(JSON.stringify(parameter.world)), states: {}};
-        this.solution = parameter.solution;
-        this.update = parameter.update;
-        this.problemCallback = parameter.callback;
-        this.perceptionForAgent = parameter.perceptionForAgent;
+        this.data.world = JSON.parse(JSON.stringify(parameter.world));
+        //this.solution = parameter.solution;
+        //this.update = parameter.update;
+        //this.callbacks = parameter.callbacks;
+        //this.perceptionForAgent = parameter.perceptionForAgent;
     }
     /**
      * Register the given agent in the controller pool. The second parameter stand for the initial state of the agent
@@ -69,12 +71,12 @@ class AgentController {
         while (!stop) {
             //Creates a thread for every single agent
             Object.values(this.agents).forEach(agent => {
-                if (!this.solution(this.data)) {
-                    agent.receive(this.perceptionForAgent(this.getData(), agent.getID()));
+                if (!this.problem.goalTest(this.data)) {
+                    agent.receive(this.problem.perceptionForAgent(this.getData(), agent.getID()));
                     let action = agent.send();
                     this.actions.push({agentID: agent.getID(), action});
-                    this.update(this.data, action, agent.getID());
-                    if (this.solution(this.data)) {
+                    this.problem.update(this.data, action, agent.getID());
+                    if (this.problem.goalTest(this.data)) {
                         stop = true;
                     } else {
                         if(this.callbacks.onTurn)
