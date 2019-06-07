@@ -4,9 +4,11 @@ First attemp to create a multi agent framework for the lecture: Introducción a 
 
 ## Install
 
+``` bash
 git clone https://github.com/andcastillo/ai-agents.git
 cd ai-agents
 npm install 
+```
 
 ## Run the example
 
@@ -14,6 +16,7 @@ node src/example/Main.js
 
 ## Output
 
+```
 Winner Smith
 [ { agentID: 'Smith', action: 'DOWN' },
   { agentID: 'Smith', action: 'RIGHT' },
@@ -31,6 +34,7 @@ Winner Smith
   [ 0, 1, 1, -1 ],
   [ 0, 1, 0, 0 ],
   [ 0, 'X', 0, 1 ] ]
+```
   
   As we still having the -1 in the problem matrix, we assume that agent could not solve the given problem.
   
