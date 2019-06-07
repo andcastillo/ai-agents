@@ -5,7 +5,6 @@ const AgentController = require('../core/AgentController');
  */
 class Problem {
     constructor(initialState) {
-        this.data = initialState;
         this.controller = new AgentController();
     }
 
@@ -13,8 +12,8 @@ class Problem {
      * Check if the given solution solves the problem. You must override
      * @param {Object} solution 
      */
-    goalTest(solution) {
-        return false;
+    goalTest(solution){
+        //TODO return boolean
     }
 
     /**
@@ -33,7 +32,7 @@ class Problem {
      * @returns and object with the information to be sent to the agent
      */
     perceptionForAgent(data, agentID) {
-        return null;
+        //TODO return the perception
     }
 
     /**
@@ -44,7 +43,18 @@ class Problem {
      */
     addAgent(agentID, agentClass, initialState) {
         let agent = new agentClass(agentID);
-        this.controller.register(agent,initialState);
+        this.controller.register(agent, initialState);
+    }
+
+
+    /**
+     * Solve the given problem
+     * @param {*} problem 
+     * @param {*} callbacks 
+     */
+    solve(problem, callbacks) {
+        this.controller.setup({ world: problem, problem: this });
+        this.controller.start(callbacks);
     }
 }
 

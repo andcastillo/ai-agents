@@ -1,10 +1,9 @@
 const Problem = require('../core/Problem');
-const AgentController = require('../core/AgentController');
 
 class CleanerProblem extends Problem {
     constructor(args) {
+        super(args);
         this.env = args;
-        this.controller = new AgentController();
     }
 
     /**
@@ -13,7 +12,7 @@ class CleanerProblem extends Problem {
      */
     goalTest(data) {
         let minX = min(data.world);
-        if (data.interations >= 12)
+        if (data.interations >= this.env.maxIterations)
             return true;
         if (minX == 0) {
             return true;
@@ -79,23 +78,18 @@ class CleanerProblem extends Problem {
         return result;
     }
 
-    solve(problem) {
-        controller.setup({ world: problem, problem: this });
-        controller.start({
-            onFinish: (result) => {
-                let agentID = result.actions[result.actions.length - 1].agentID;
-                console.log("Winner " + agentID);
-                console.log(result.actions);
-                let world = JSON.parse(JSON.stringify(result.data.world));
-                let agentState = result.data.states[agentID];
-                world[agentState.y][agentState.x] = "X"
-                console.log(world);
-            }, onTurn: (result) => { console.log("Turn: " + result) }
-        });
+    /**
+     * Solve the given problem
+     * @param {*} problem 
+     * @param {*} callbacks 
+     */
+    solve(problem, callbacks) {
+        this.controller.setup({ world: problem, problem: this });
+        this.controller.start(callbacks);
     }
 }
 
-module.exports = Problem;
+module.exports = CleanerProblem;
 
 
 function min(data) {
