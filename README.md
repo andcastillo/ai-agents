@@ -12,7 +12,7 @@ npm install
 
 ## Run the example
 
-node src/example/Main.js
+node src/example/main.js
 
 ## Output
 
