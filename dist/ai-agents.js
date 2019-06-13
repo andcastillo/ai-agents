@@ -1,6 +1,6 @@
 /**
  * ai-agents - Framework to create virtual agents
- * @version v0.1.2
+ * @version v0.2.0
  * @link https://github.com/andcastillo/ai-agents
  * @license MIT
  */
@@ -124,10 +124,7 @@ class AgentController {
   setup(parameter) {
     this.problem = parameter.problem;
     this.world0 = JSON.parse(JSON.stringify(parameter.world));
-    this.data.world = JSON.parse(JSON.stringify(parameter.world)); //this.solution = parameter.solution;
-    //this.update = parameter.update;
-    //this.callbacks = parameter.callbacks;
-    //this.perceptionForAgent = parameter.perceptionForAgent;
+    this.data.world = JSON.parse(JSON.stringify(parameter.world));
   }
   /**
    * Register the given agent in the controller pool. The second parameter stand for the initial state of the agent
@@ -168,17 +165,59 @@ class AgentController {
     delete this.agents[id];
   }
   /**
-   * This function start the virtual life. It will continously execute the actions
-   * given by the agents in response to the perceptions. It stop when the solution function
-   * is satified or when the max number of iterations is reached.
-   * @param {Array} callbacks 
+  * This function start the virtual life. It will continously execute the actions
+  * given by the agents in response to the perceptions. It stop when the solution function
+  * is satisfied or when the max number of iterations is reached.
+  * If it must to run in interactive mode, the start mode return this object, which is actually 
+  * the controller
+  * @param {Array} callbacks 
+  */
+
+
+  start(callbacks) {
+    let interactive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    this.callbacks = callbacks;
+    this.currentAgentIndex = 0;
+
+    if (interactive === false) {
+      this.loop();
+      return null;
+    } else {
+      return this;
+    }
+  }
+  /**
+   * Executes the next iteration in the virtual life simulation
    */
 
 
-  start() {
-    let callbacks = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    this.callbacks = callbacks;
-    this.loop();
+  next() {
+    if (!this.problem.goalTest(this.data)) {
+      let keys = Object.keys(this.agents);
+      let agent = this.agents[keys[this.currentAgentIndex]];
+      agent.receive(this.problem.perceptionForAgent(this.getData(), agent.getID()));
+      let action = agent.send();
+      this.actions.push({
+        agentID: agent.getID(),
+        action
+      });
+      this.problem.update(this.data, action, agent.getID());
+
+      if (this.problem.goalTest(this.data)) {
+        this.finishAll();
+        return false;
+      } else {
+        if (this.callbacks.onTurn) {
+          this.callbacks.onTurn({
+            actions: this.getActions(),
+            data: this.data
+          });
+        }
+
+        if (this.currentAgentIndex >= keys.length - 1) this.currentAgentIndex = 0;else this.currentAgentIndex++;
+        return true;
+      }
+    }
   }
   /**
    * Virtual life loop. At the end of every step it executed the onTurn call back. It could b used for animations of login
@@ -204,8 +243,8 @@ class AgentController {
             stop = true;
           } else {
             if (this.callbacks.onTurn) this.callbacks.onTurn({
-              data,
-              action
+              actions: this.getActions(),
+              data: this.data
             });
           }
         }
@@ -333,17 +372,31 @@ class Problem {
   }
   /**
    * Solve the given problem
-   * @param {*} problem 
+   * @param {*} world 
    * @param {*} callbacks 
    */
 
 
-  solve(problem, callbacks) {
+  solve(world, callbacks) {
     this.controller.setup({
-      world: problem,
+      world: world,
       problem: this
     });
-    this.controller.start(callbacks);
+    this.controller.start(callbacks, false);
+  }
+  /**
+  * Returns an interable function that allow to execute the simulation step by step
+  * @param {*} world 
+  * @param {*} callbacks 
+  */
+
+
+  interactiveSolve(world, callbacks) {
+    this.controller.setup({
+      world: world,
+      problem: this
+    });
+    return this.controller.start(callbacks, true);
   }
 
 }

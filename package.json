@@ -1,6 +1,6 @@
 {
     "name": "ai-agents",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "description": "Framework to create virtual agents",
     "keywords": [
         "multi agent",

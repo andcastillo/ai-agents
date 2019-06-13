@@ -5,7 +5,7 @@ class AgentController {
         this.world0 = null;
         this.world = null;
         this.actions = [];
-        this.data = {states: [], world : {}}
+        this.data = { states: [], world: {} }
     }
     /**
      * Setup the configuration for the agent controller
@@ -15,10 +15,6 @@ class AgentController {
         this.problem = parameter.problem;
         this.world0 = JSON.parse(JSON.stringify(parameter.world));
         this.data.world = JSON.parse(JSON.stringify(parameter.world));
-        //this.solution = parameter.solution;
-        //this.update = parameter.update;
-        //this.callbacks = parameter.callbacks;
-        //this.perceptionForAgent = parameter.perceptionForAgent;
     }
     /**
      * Register the given agent in the controller pool. The second parameter stand for the initial state of the agent
@@ -52,15 +48,52 @@ class AgentController {
         agent.stop();
         delete this.agents[id];
     }
+
     /**
-     * This function start the virtual life. It will continously execute the actions
-     * given by the agents in response to the perceptions. It stop when the solution function
-     * is satified or when the max number of iterations is reached.
-     * @param {Array} callbacks 
-     */
-    start(callbacks = {}) {
+    * This function start the virtual life. It will continously execute the actions
+    * given by the agents in response to the perceptions. It stop when the solution function
+    * is satisfied or when the max number of iterations is reached.
+    * If it must to run in interactive mode, the start mode return this object, which is actually 
+    * the controller
+    * @param {Array} callbacks 
+    */
+    start(callbacks, interactive = false) {
         this.callbacks = callbacks;
-        this.loop();
+        this.currentAgentIndex = 0;
+        if (interactive === false) {
+            this.loop();
+            return null;
+        }
+        else {
+            return this;
+        }
+    }
+
+    /**
+     * Executes the next iteration in the virtual life simulation
+     */
+    next() {
+        if (!this.problem.goalTest(this.data)) {
+            let keys = Object.keys(this.agents);
+            let agent = this.agents[keys[this.currentAgentIndex]];
+            agent.receive(this.problem.perceptionForAgent(this.getData(), agent.getID()));
+            let action = agent.send();
+            this.actions.push({ agentID: agent.getID(), action });
+            this.problem.update(this.data, action, agent.getID());
+            if (this.problem.goalTest(this.data)) {
+                this.finishAll();
+                return false;
+            } else {
+                if (this.callbacks.onTurn) {
+                    this.callbacks.onTurn({ actions: this.getActions(), data: this.data });
+                }
+                if (this.currentAgentIndex >= keys.length - 1)
+                    this.currentAgentIndex = 0;
+                else
+                    this.currentAgentIndex++;
+                return true;
+            }
+        }
     }
 
     /**
@@ -74,13 +107,13 @@ class AgentController {
                 if (!this.problem.goalTest(this.data)) {
                     agent.receive(this.problem.perceptionForAgent(this.getData(), agent.getID()));
                     let action = agent.send();
-                    this.actions.push({agentID: agent.getID(), action});
+                    this.actions.push({ agentID: agent.getID(), action });
                     this.problem.update(this.data, action, agent.getID());
                     if (this.problem.goalTest(this.data)) {
                         stop = true;
                     } else {
-                        if(this.callbacks.onTurn)
-                            this.callbacks.onTurn({actions: this.getActions(), data: this.data });
+                        if (this.callbacks.onTurn)
+                            this.callbacks.onTurn({ actions: this.getActions(), data: this.data });
                     }
                 }
             });
@@ -99,8 +132,8 @@ class AgentController {
             this.unregister(agent);
         });
         //Execute the callback
-        if(this.callbacks.onFinish)
-            this.callbacks.onFinish({actions: this.getActions(), data: this.data});
+        if (this.callbacks.onFinish)
+            this.callbacks.onFinish({ actions: this.getActions(), data: this.data });
     }
 
     /**

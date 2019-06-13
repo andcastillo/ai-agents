@@ -4,7 +4,7 @@ const CleanerAgent = require('./CleanerAgent');
 let myProblem = new CleanerProblem({maxIterations: 12});
 
 myProblem.addAgent("Smith", CleanerAgent, {x: 0, y: 2});
-myProblem.solve([
+let iterator = myProblem.interactiveSolve([
     [0, 0, 0, 0 ],
     [0, 1, 1, -1],
     [0, 1, 0, 0],
@@ -20,3 +20,9 @@ myProblem.solve([
         }, 
         onTurn: (result) => { console.log("Turn: " + JSON.stringify(result.actions[result.actions.length - 1])) }
     });
+
+iterator.next();
+iterator.next();
+
+
+
