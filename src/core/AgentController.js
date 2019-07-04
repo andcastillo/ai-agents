@@ -5,7 +5,7 @@ class AgentController {
         this.world0 = null;
         this.world = null;
         this.actions = [];
-        this.data = { states: [], world: {} }
+        this.data = { states: {}, world: {} }
     }
     /**
      * Setup the configuration for the agent controller

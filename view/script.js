@@ -20,8 +20,9 @@ function createModel() {
 
     // Add a single hidden layer
     model.add(tf.layers.dense({ inputShape: [1], units: 1}));
-    model.add(tf.layers.dense({ units: 30, activation: 'tanh', useBias: true}));
-    model.add(tf.layers.dense({ units: 10, activation: 'tanh', useBias: true}));
+    //model.add(tf.layers.dense({ units: 3, activation: '', useBias: true}));
+    //model.add(tf.layers.dense({ units: 10, activation: 'tanh', useBias: true}));
+    //model.add(tf.layers.dense({ units: 5, activation: 'tanh', useBias: true}));
     // Add a single hidden layer
     //model.add(tf.layers.dense({ units: 50 }));
     //model.add(tf.layers.dense({ units: 4, activation: 'sigmoid', useBias: true }));
