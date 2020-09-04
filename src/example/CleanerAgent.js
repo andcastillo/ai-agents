@@ -21,7 +21,7 @@ class CleanerAgent extends Agent {
             "1,0,0,1,0": "RIGHT",
             "1,0,1,0,0": "DOWN",
             "1,0,1,1,0": "UP",
-            "1,1,0,0,0": "RIGTH",
+            "1,1,0,0,0": "RIGHT",
             "1,1,0,1,0": "RIGHT",
             "1,1,1,0,0": "DOWN",
             "default": "TAKE"

@@ -8,14 +8,14 @@ class Agent {
         }
         this.state = null;
         this.perception = null
-        this.table = {"default": 0};
+        this.table = { "default": 0 };
     };
 
     /**
      * Setup of the agent. Could be override by the class extension
      * @param {*} parameters 
      */
-    setup(initialState = { }) {
+    setup(initialState = {}) {
         this.initialState = initialState;
     }
     /**
@@ -31,7 +31,7 @@ class Agent {
      * Inform to the Agent controller about the action to perform
      */
     send() {
-        return table["deafult"];
+        return this.table["deafult"];
     }
 
     /**
@@ -41,9 +41,9 @@ class Agent {
         return this.id;
     }
 
-   /**
-     * Return the agent id
-     */
+    /**
+      * Return the agent id
+      */
     getID() {
         return this.id;
     }
