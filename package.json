@@ -28,6 +28,7 @@
         ]
     },
     "scripts": {
+        "solve": "node src/example/main.js",
         "test": "npm run testonly && npm run eslint",
         "testonly": "jest",
         "build": "npm run build-clean && npm run compile && npm run build-dist",
