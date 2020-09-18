@@ -17,10 +17,11 @@ function testGoal(node, problem) {
 
 function solve(problem, root) {
     let solution = [];
+    let cost = 0;
     // START CODE HERE
 
     // END CODE HERE
-    return solution
+    return { solution, cost }
 }
 
 console.log(solve(problem, start));
