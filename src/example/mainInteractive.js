@@ -32,8 +32,10 @@ let iterator = myProblem.interactiveSolve([
     onTurn: (result) => { console.log("Turn: " + JSON.stringify(result.actions[result.actions.length - 1])) }
 });
 
-iterator.next();
-iterator.next();
 
+module.exports  = iterator;
+ 
+// Load in a nodejs console doing:
+// const iterator = require('./mainInteractive')
 
 

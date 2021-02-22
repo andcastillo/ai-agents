@@ -7,12 +7,6 @@ const Agent = require('../core/Agent');
 class CleanerAgent extends Agent {
     constructor(value) {
         super(value);
-
-        this.costs = {
-            "R": 1,
-            "L": 1,
-            "A": 3
-        }
     }
 
 
@@ -22,7 +16,9 @@ class CleanerAgent extends Agent {
      * In this case, the state is just obtained as the join of the perceptions
      */
     send() {
-        return this.table[this.perception.join(",")]
+        // @TODO
+        // Implement based on the cost of each action
+        //return this.table[this.perception.join(",")]
     }
 
 }

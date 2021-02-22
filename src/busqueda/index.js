@@ -15,6 +15,7 @@ function testGoal(node, problem) {
     return false;
 }
 
+
 function solve(problem, root) {
     let solution = [];
     let cost = 0;
