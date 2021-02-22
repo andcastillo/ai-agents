@@ -76,6 +76,7 @@ class AgentController {
             let keys = Object.keys(this.agents);
             let agent = this.agents[keys[this.currentAgentIndex]];
             agent.receive(this.problem.perceptionForAgent(this.getData(), agent.getID()));
+            // Espera
             let action = agent.send();
             this.actions.push({ agentID: agent.getID(), action });
             this.problem.update(this.data, action, agent.getID());
@@ -84,7 +85,7 @@ class AgentController {
                 return false;
             } else {
                 if (this.callbacks.onTurn) {
-                    this.callbacks.onTurn({ actions: this.getActions(), data: this.data });
+                    this.callbacks.onTurn({ actions: this.getActions(), data: JSON.parse(JSON.stringify(this.data)) });
                 }
                 if (this.currentAgentIndex >= keys.length - 1)
                     this.currentAgentIndex = 0;

@@ -11,7 +11,8 @@ myProblem.solve([1, 1], {
         console.log(result.actions);
         let world = JSON.parse(JSON.stringify(result.data.world));
         let agentState = result.data.states[agentID];
-        world[agentState.pos] = "X"
+        //world[agentState.pos] = "X"
+        console.log(agentState.pos)
         console.log(world)
         console.log("Agent could solve this problem :)")
     },
