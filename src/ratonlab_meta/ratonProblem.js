@@ -16,7 +16,7 @@ class CleanerProblem extends Problem {
      */
     goalTest(data) {
         let minX = min(data.world);
-        if (data.interations >= this.env.maxIterations)
+        if (data.iterations >= this.env.maxIterations)
             return true;
         if (minX == 0) {
             return true;
@@ -38,24 +38,24 @@ class CleanerProblem extends Problem {
         let map = data.world;
         let agentState = data.states[agentID];
         if (action == "UP") {
-            agentState.y -= 1;
+            agentState.raton.y -= 1;
         }
         if (action == "DOWN") {
-            agentState.y += 1;
+            agentState.raton.y += 1;
         }
         if (action == "LEFT") {
-            agentState.x -= 1;
+            agentState.raton.x -= 1;
         }
         if (action == "RIGHT") {
-            agentState.x += 1;
+            agentState.raton.x += 1;
         }
         if (action == "TAKE") {
-            map[agentState.y][agentState.x] = 0;
+            map[agentState.raton.y][agentState.raton.x] = 0;
         }
-        if (!data.interations) {
-            data.interations = 1;
+        if (!data.iterations) {
+            data.iterations = 1;
         } else {
-            data.interations++;
+            data.iterations++;
         }
     }
 
@@ -69,8 +69,8 @@ class CleanerProblem extends Problem {
     perceptionForAgent(data, agentID) {
         let map = data.world;
         let agentState = data.states[agentID];
-        let x = agentState.x;
-        let y = agentState.y;
+        let x = agentState.raton.x;
+        let y = agentState.raton.y;
         let result = [];
         //LEFT
         result.push(x > 0 ? map[y][x - 1] : 1);
@@ -85,6 +85,13 @@ class CleanerProblem extends Problem {
 
         //SMELL
         result.push(Math.abs(map[y][x]));
+
+        // Pasar la información sobre donde está el queso
+        result.push(agentState.raton.x)
+        result.push(agentState.raton.y)
+        result.push(agentState.queso.x)
+        result.push(agentState.queso.y)
+
         return result;
     }
 

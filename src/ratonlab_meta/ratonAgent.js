@@ -28,11 +28,20 @@ class CleanerAgent extends Agent {
         };
     }
 
+    setup(state0) {
+        this.x = state0.raton.x;
+        this.y = state0.raton.y;
+        this.queso0 = state0.queso;
+    }
+
     /**
      * We override the send method. 
      * In this case, the state is just obtained as the join of the perceptions
      */
     send() {
+        //this.perception = [LEFT, UP, DOWN, RIGTH, SMELL, ratonx, ratony, qx, qy]
+
+        
         let viewKey = this.perception.join();
         //let action = foo(this.internalState, this.perception)
         //this.internalState = updatex(this.internalState, this.perception, action)
